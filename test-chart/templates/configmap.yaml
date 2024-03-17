@@ -1,0 +1,13 @@
+# Create a configmap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-config
+data: |
+{{/*  {{- $properties := include "test-chart.mergeJavaProperties" (dict "baseProperties" .Values.global.spring.config.base_a_properties "overridenProperties" .Values.spring.config.base_a_properties) -}}*/}}
+{{/*  {{- $properties | nindent 2 }}*/}}
+  {{- $test_properties_as_dict := (dict) }}
+  {{- $test := include "test-chart.addTestValue" (dict "test" $test_properties_as_dict) -}}
+{{- range $key, $value := $test_properties_as_dict }}
+{{- printf "%s: %s" $key $value | nindent 4}}
+{{- end }}
