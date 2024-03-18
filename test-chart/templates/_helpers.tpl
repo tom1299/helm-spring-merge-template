@@ -100,6 +100,13 @@ The method returns the modified dict. */}}
 {{- define "test-chart.addTestValue" -}}
 {{- $test := .test -}}
 {{- $test = set $test "test" "testvalue" -}}
-{{- $test -}}
+{{- $test = set $test "test2" "testvalue2" -}}
+{{- $javaProperties := .javaProperties | splitList "\n" -}}
+{{- range $property := $javaProperties -}}
+{{- $keyValue := split "=" $property -}}
+{{- if eq (len $keyValue) 2 -}}
+{{- $test = set $test ($keyValue)._0 ($keyValue)._1 -}}
+{{- end -}}
+{{- end -}}
 {{- end -}}
 
