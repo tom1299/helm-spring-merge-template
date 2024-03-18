@@ -80,7 +80,7 @@ The method ignores lines that do not contain an equal sign.
 {{- $javaProperties := .javaProperties | splitList "\n" -}}
 {{- range $property := $javaProperties -}}
 {{- $keyValue := split "=" $property -}}
-{{- if eq (len $keyValue) 2 -}}
+{{- if ge (len $keyValue) 2 -}}
 {{- $result = set $result ($keyValue)._0 ($keyValue)._1 -}}
 {{- end -}}
 {{- end -}}
@@ -103,7 +103,7 @@ The method returns the modified dict. */}}
 {{- $javaProperties := .javaProperties | splitList "\n" -}}
 {{- range $property := $javaProperties -}}
 {{- $keyValue := split "=" $property -}}
-{{- if eq (len $keyValue) 2 -}}
+{{- if ge (len $keyValue) 2 -}}
 {{- $test = set $test ($keyValue)._0 ($keyValue)._1 -}}
 {{- end -}}
 {{- end -}}
@@ -111,6 +111,17 @@ The method returns the modified dict. */}}
 
 {{- define "test-chart.mergeProperties" -}}
 {{- $mergedProperties := .mergedProperties -}}
+{{- $baseProperties := (dict) }}
+{{- include "test-chart.javaPropertiesToDict" (dict "result" $baseProperties "javaProperties" .baseProperties) -}}
+{{- $overriddenProperties := (dict) }}
+{{- include "test-chart.javaPropertiesToDict" (dict "result" $overriddenProperties "javaProperties" .overriddenProperties) -}}
+{{- $mergedProperties := merge $overriddenProperties $baseProperties -}}
+{{- range $key, $value := $mergedProperties }}
+{{- printf "%s: %s" $key $value | nindent 4}}
+{{- end }}
+{{- end -}}
+
+{{- define "test-chart.mergePropertiesV2" -}}
 {{- $baseProperties := (dict) }}
 {{- include "test-chart.javaPropertiesToDict" (dict "result" $baseProperties "javaProperties" .baseProperties) -}}
 {{- $overriddenProperties := (dict) }}

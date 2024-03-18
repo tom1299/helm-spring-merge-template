@@ -113,7 +113,6 @@ global:
         a-property-a=value-a
         a-property-b=value-b
         a-property-c=value-c
-        # A comment that should be ignored
         a-property-d="'"-#äöüß$%&/()=?`´^°*+~<>|@€{[]}\\"
       base_b_properties: |
         b-property-a=value-a

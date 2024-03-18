@@ -13,9 +13,4 @@ data: |
 {{- printf "%s: %s" $key $value | nindent 4}}
 {{- end }}
     # Delimiter
-{{- $mergedProperties := (dict) }}
-{{- include "test-chart.mergeProperties" (dict "result" $mergedProperties "baseProperties" .Values.global.spring.config.base_a_properties "overriddenProperties" .Values.spring.config.base_a_properties) -}}
-{{/*{{- range $key, $value := $mergedProperties }}*/}}
-{{/*{{- printf "%s: %s" $key $value | nindent 4}}*/}}
-{{/*{{- end }}*/}}
-{{/*{{- $mergedProperties := (dict) }}*/}}
+{{- include "test-chart.mergePropertiesV2" (dict "baseProperties" .Values.global.spring.config.base_a_properties "overriddenProperties" .Values.spring.config.base_a_properties) -}}
