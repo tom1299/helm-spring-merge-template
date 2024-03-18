@@ -109,3 +109,14 @@ The method returns the modified dict. */}}
 {{- end -}}
 {{- end -}}
 
+{{- define "test-chart.mergeProperties" -}}
+{{- $mergedProperties := .mergedProperties -}}
+{{- $baseProperties := (dict) }}
+{{- include "test-chart.javaPropertiesToDict" (dict "result" $baseProperties "javaProperties" .baseProperties) -}}
+{{- $overriddenProperties := (dict) }}
+{{- include "test-chart.javaPropertiesToDict" (dict "result" $overriddenProperties "javaProperties" .overriddenProperties) -}}
+{{- $mergedProperties := merge $overriddenProperties $baseProperties -}}
+{{- range $key, $value := $mergedProperties }}
+{{- printf "%s: %s" $key $value | nindent 4}}
+{{- end }}
+{{- end -}}
