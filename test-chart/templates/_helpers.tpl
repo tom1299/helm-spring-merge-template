@@ -76,15 +76,14 @@ The key and value are then added to the dictionary.
 The method ignores lines that do not contain an equal sign.
 */}}
 {{- define "test-chart.javaPropertiesToDict" -}}
-{{- $javaProperties := index . "javaProperties" | toString | splitList "\n" -}}
-{{- $result := dict -}}
+{{- $result := .result -}}
+{{- $javaProperties := .javaProperties | splitList "\n" -}}
 {{- range $property := $javaProperties -}}
 {{- $keyValue := split "=" $property -}}
 {{- if eq (len $keyValue) 2 -}}
 {{- $result = set $result ($keyValue)._0 ($keyValue)._1 -}}
 {{- end -}}
 {{- end -}}
-{{- $result -}}
 {{- end -}}
 
 {{/* This method takes two multi line strings, uses the fucntion javaPropertiesToDictm
