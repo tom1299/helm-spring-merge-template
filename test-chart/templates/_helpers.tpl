@@ -173,14 +173,15 @@ The method returns the modified dict. */}}
 {{- end -}}
 
 {{- define "test-chart.serachForValue" -}}
-{{- $keyName := .keyName -}}
-{{- $found_value := get .dictValues .keyName -}}
+    {{- $keyName := .keyName -}}
+    {{- $mapValues := .values -}}
+    {{- $found_value := get $mapValues $keyName -}}
     {{- if $found_value -}}
-        {{- $found_value = index .dictValues .keyName -}}
+        {{- $found_value = index $mapValues $keyName -}}
     {{- else -}}
-        {{- range $key, $value := .dictValues -}}
-            {{- if kindIs "map" $value -}}
-                {{- $found_value = include "test-chart.serachForValue" (dict "dictValues" $value "keyName" $keyName) -}}
+        {{- range $nestedKey, $nestedValue := $mapValues -}}
+            {{- if kindIs "map" $nestedValue -}}
+                {{- $found_value = include "test-chart.serachForValue" (dict "values" $nestedValue "keyName" $keyName) -}}
             {{- end -}}
             {{- if ne $found_value "" -}}
                 {{- break -}}
