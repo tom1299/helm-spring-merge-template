@@ -13,4 +13,6 @@ data: |
 {{- printf "%s: %s" $key $value | nindent 4}}
 {{- end }}
     # Delimiter
-{{- include "test-chart.mergePropertiesV2" (dict "baseProperties" .Values.global.spring.config.base_a_properties "overriddenProperties" .Values.spring.config.base_a_properties) -}}
+{{- include "test-chart.mergePropertiesV2" (dict "baseProperties" .Values.global.spring.config.base_a_properties "overriddenProperties" .Values.spring.config.base_a_properties) | nindent 4 -}}
+    # Delimiter
+{{- include "test-chart.mergePropertiesExtended" (list .Values.global.spring.config.base_a_properties .Values.spring.config.base_a_properties .Values.spring.extended_config.base_a_properties) | nindent 4 -}}

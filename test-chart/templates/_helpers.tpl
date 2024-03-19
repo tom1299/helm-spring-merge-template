@@ -115,7 +115,7 @@ The method returns the modified dict. */}}
 {{- include "test-chart.javaPropertiesToDict" (dict "result" $baseProperties "javaProperties" .baseProperties) -}}
 {{- $overriddenProperties := (dict) }}
 {{- include "test-chart.javaPropertiesToDict" (dict "result" $overriddenProperties "javaProperties" .overriddenProperties) -}}
-{{- $mergedProperties := merge $overriddenProperties $baseProperties -}}
+{{- $mergedProperties = merge $overriddenProperties $baseProperties -}}
 {{- range $key, $value := $mergedProperties }}
 {{- printf "%s: %s" $key $value | nindent 4}}
 {{- end }}
@@ -128,6 +128,18 @@ The method returns the modified dict. */}}
 {{- include "test-chart.javaPropertiesToDict" (dict "result" $overriddenProperties "javaProperties" .overriddenProperties) -}}
 {{- $mergedProperties := merge $overriddenProperties $baseProperties -}}
 {{- range $key, $value := $mergedProperties }}
-{{- printf "%s: %s" $key $value | nindent 4}}
+{{- println $key ":" $value}}
+{{- end }}
+{{- end -}}
+
+{{- define "test-chart.mergePropertiesExtended" -}}
+{{- $result := (dict) -}}
+{{- range $property := . -}}
+{{- $propertyAsDict := (dict) -}}
+{{- include "test-chart.javaPropertiesToDict" (dict "result" $propertyAsDict "javaProperties" $property) -}}
+{{- $result = merge $propertyAsDict $result -}}
+{{- end -}}
+{{- range $key, $value := $result }}
+{{- println $key ":" $value}}
 {{- end }}
 {{- end -}}

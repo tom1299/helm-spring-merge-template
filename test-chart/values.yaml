@@ -118,8 +118,11 @@ global:
         b-property-a=value-a
         b-property-b=value-b
         b-property-c=value-c
-
 spring:
   config:
     base_a_properties: |
-      a-property-c=value-c-overridden
+      a-property-c=value-c-overridden-in-config
+  extended_config:
+    base_a_properties: |
+      a-property-a=value-a-overridden-in-extended-config
+      a-property-e=e-value-from-extended-config
