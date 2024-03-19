@@ -139,9 +139,9 @@ The method returns the modified dict. */}}
 {{- include "test-chart.javaPropertiesToDict" (dict "result" $propertyAsDict "javaProperties" $property) -}}
 {{- $result = merge $propertyAsDict $result -}}
 {{- end -}}
-{{- range $key, $value := $result }}
-{{- println $key ":" $value}}
-{{- end }}
+{{- range $key, $value := $result -}}
+{{- println $key ":" $value -}}
+{{- end -}}
 {{- end -}}
 
 {{- define "test-chart.serachForValueDebug" -}}
@@ -189,4 +189,17 @@ The method returns the modified dict. */}}
         {{- end -}}
     {{- end -}}
     {{- $found_value -}}
+{{- end -}}
+
+{{- define "addMergedProperties" -}}
+    {{- $config := .config -}}
+    {{- $baseConfig := .baseConfig -}}
+    {{- range $key, $value := $config -}}
+        {{- $foundValue := include "test-chart.serachForValue" (dict "values" $baseConfig "keyName" $key) -}}
+        {{- if not $foundValue -}}
+            {{- $foundValue = "" -}}
+        {{- end -}}
+        {{- printf "%s: |" $key | nindent 2 -}}
+        {{- include "test-chart.mergePropertiesExtended" (list $foundValue $value) | nindent 4 -}}
+    {{- end -}}
 {{- end -}}

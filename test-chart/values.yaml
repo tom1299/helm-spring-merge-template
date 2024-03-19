@@ -122,6 +122,8 @@ spring:
   config:
     base_a_properties: |
       a-property-c=value-c-overridden-in-config
+    base_c_properties: |
+      c-property-a=value-a
   extended_config:
     base_a_properties: |
       a-property-a=value-a-overridden-in-extended-config

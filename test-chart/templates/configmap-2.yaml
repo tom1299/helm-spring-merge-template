@@ -1,0 +1,7 @@
+# Create a configmap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-config-2
+data:
+{{- include "addMergedProperties" (dict "config" .Values.spring.config "baseConfig" .Values.global.spring.config) -}}
