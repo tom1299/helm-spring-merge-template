@@ -16,3 +16,13 @@ data: |
 {{- include "test-chart.mergePropertiesV2" (dict "baseProperties" .Values.global.spring.config.base_a_properties "overriddenProperties" .Values.spring.config.base_a_properties) | nindent 4 -}}
     # Delimiter
 {{- include "test-chart.mergePropertiesExtended" (list .Values.global.spring.config.base_a_properties .Values.spring.config.base_a_properties .Values.spring.extended_config.base_a_properties) | nindent 4 -}}
+    # Delimiter
+    foundValue: |
+{{- include "test-chart.serachForValue" (dict "dictValues" .Values.global.spring.config "keyName" "base_a_properties") | nindent 6 -}}
+    # Delimiter
+{{- $foundValue := include "test-chart.serachForValue" (dict "dictValues" .Values.global.spring "keyName" "base_a_properties") | nindent 2 -}}
+{{- printf "foundValue: | %s" $foundValue | nindent 4}}
+    # Delimiter
+{{- $foundValue = include "test-chart.serachForValue" (dict "dictValues" .Values.spring "keyName" "base_a_properties") | nindent 2 -}}
+{{- printf "foundValue: | %s" $foundValue | nindent 4}}
+

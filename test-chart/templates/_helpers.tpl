@@ -143,3 +143,49 @@ The method returns the modified dict. */}}
 {{- println $key ":" $value}}
 {{- end }}
 {{- end -}}
+
+{{- define "test-chart.serachForValueDebug" -}}
+{{- println "SearchingFor" ":" .keyName " in" ":" .dictValues -}}
+{{- $keyName := .keyName -}}
+{{- range $key, $value := .dictValues -}}
+{{- println "key" ":" $key -}}
+{{- end -}}
+{{- $found_value := get .dictValues .keyName -}}
+{{- println "found_value" ":" $found_value}}
+    {{- if $found_value -}}
+        {{- $found_value = index .dictValues .keyName -}}
+        {{- println "found" ":" $found_value}}
+    {{- else -}}
+        {{- range $key, $value := .dictValues -}}
+            {{- println "srachKey" ":" $key -}}
+            {{- println "srachValue" ":" $value -}}
+            {{- if kindIs "map" $value -}}
+                {{- println "searchingInMap" ":" $value -}}
+                {{- println "ForKey" ":" $keyName -}}
+                {{- $found_value = include "test-chart.serachForValue" (dict "dictValues" $value "keyName" $keyName) -}}
+            {{- end -}}
+            {{- if ne $found_value "" -}}
+                {{- break -}}
+            {{- end -}}
+        {{- end -}}
+    {{- end -}}
+    {{- $found_value -}}
+{{- end -}}
+
+{{- define "test-chart.serachForValue" -}}
+{{- $keyName := .keyName -}}
+{{- $found_value := get .dictValues .keyName -}}
+    {{- if $found_value -}}
+        {{- $found_value = index .dictValues .keyName -}}
+    {{- else -}}
+        {{- range $key, $value := .dictValues -}}
+            {{- if kindIs "map" $value -}}
+                {{- $found_value = include "test-chart.serachForValue" (dict "dictValues" $value "keyName" $keyName) -}}
+            {{- end -}}
+            {{- if ne $found_value "" -}}
+                {{- break -}}
+            {{- end -}}
+        {{- end -}}
+    {{- end -}}
+    {{- $found_value -}}
+{{- end -}}
